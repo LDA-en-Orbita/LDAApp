@@ -85,25 +85,25 @@ const PlanetScreen: React.FC = () => {
 
       {/* Carrusel */}
       {!loading && planets.length > 0 && (
-        <FlatList
-          data={planets}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => item.command || index.toString()}
-          snapToInterval={width * 0.85 + 20}
-          snapToAlignment="center"
-          decelerationRate="fast"
-          style={{ marginTop: 50 }}
-          contentContainerStyle={{
-            paddingHorizontal: (width - (width * 0.95)) / 2,
-            alignItems: 'flex-start',
-            gap: 20,
-          }}
-          renderItem={({ item, index }) => (
+        <View style={styles.carouselContainer}>
+          <FlatList
+            data={planets}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item, index) => item.command || index.toString()}
+            snapToInterval={width * 0.85 + 20}
+            snapToAlignment="center"
+            decelerationRate="fast"
+            contentContainerStyle={{
+              paddingHorizontal: (width - (width * 0.95)) / 2,
+              alignItems: 'flex-start',
+              gap: 20,
+            }}
+            renderItem={({ item, index }) => (
             <View style={styles.cardWrapper}>
               <View style={styles.imageContainer}>
                 <Image
-                  source={{ uri: planetImages[item.target_name] || planetImages['Earth'] }}
+                  source={require('../../../assets/images/planet/earth.png')}
                   style={styles.planetImage}
                   contentFit="cover"
                 />
@@ -132,6 +132,7 @@ const PlanetScreen: React.FC = () => {
             </View>
           )}
         />
+        </View>
       )}
     </ImageBackground>
   );
@@ -157,6 +158,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
+  carouselContainer: {
+    flex: 1,
+    marginTop: 100, // Espacio para el navbar transparente
+    width: '100%',
+  },
   cardWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -171,10 +177,6 @@ const styles = StyleSheet.create({
   planetImage: {
     width: width * 0.6,
     height: width * 0.6,
-    borderRadius: 60,
-    borderWidth: 3,
-    borderColor: '#fff',
-    backgroundColor: '#000',
   },
   planetContainer: {
     marginTop: -50,
