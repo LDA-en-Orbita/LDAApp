@@ -11,9 +11,16 @@ export default function PlanetsPage() {
         options={{ 
           headerShown: true, 
           title: ScreenTitles.PLANETS,
-          headerStyle: { backgroundColor: '#1a1a2e' },
+          headerTransparent: true,
+          headerStyle: { 
+            backgroundColor: 'transparent',
+          },
           headerTintColor: '#ffffff',
-          headerTitleStyle: { fontWeight: 'bold' }
+          headerTitleStyle: { 
+            fontWeight: 'bold',
+            color: '#ffffff'
+          },
+          headerBlurEffect: 'dark', // Efecto blur en iOS
         }} 
       />
       <PlanetScreen />

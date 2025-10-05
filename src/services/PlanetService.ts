@@ -1,7 +1,9 @@
 // services/PlanetService.ts
 import { PlanetData, PlanetsApiResponse } from '../models/PlanetModel';
 
-const API_URL = 'https://back.lda-orbita.earth/api/v1/planets';
+// Configuración de la API desde variables de entorno
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL;
+const API_PLANETS_ENDPOINT = `${API_BASE_URL}planets`;
 
 class PlanetService {
   /**
@@ -11,30 +13,24 @@ class PlanetService {
    */
   async getAllPlanets(): Promise<PlanetData[]> {
     try {
-      console.log('🚀 [PlanetService] Iniciando fetch a:', API_URL);
+      console.log('🔧 [PlanetService] API URL:', API_PLANETS_ENDPOINT);
       
-      const response = await fetch(API_URL, {
+      const response = await fetch(API_PLANETS_ENDPOINT, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
-      console.log('📡 [PlanetService] Response status:', response.status);
-      console.log('📡 [PlanetService] Response ok:', response.ok);
+      console.log('🌐 [PlanetService] Respuesta cruda:', response);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data: PlanetsApiResponse = await response.json();
-      console.log('📦 [PlanetService] Data recibida:', {
-        status: data.status,
-        planetsCount: data.data?.data?.length || 0
-      });
 
       if (data.status === 200 && data.data && data.data.data) {
-        console.log('✅ [PlanetService] Planetas cargados exitosamente:', data.data.data.length);
         return data.data.data;
       } else {
         throw new Error('Respuesta de API inválida');

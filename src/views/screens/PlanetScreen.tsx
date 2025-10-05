@@ -1,4 +1,5 @@
 import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -44,6 +45,7 @@ const PlanetScreen: React.FC = () => {
       setPlanets(planetsData);
       
     } catch (err) {
+      console.error('❌ [PlanetScreen] Error al cargar planetas:', err);
       // El servicio ya hace el logging detallado
       const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
       setError(`Error de conexión: ${errorMessage}`);
@@ -61,7 +63,18 @@ const PlanetScreen: React.FC = () => {
   }, []);
 
   return (
-    <ImageBackground style={styles.container}>
+    <ImageBackground 
+      source={require('../../../assets/images/background-c.jpg')}
+      style={styles.container}
+      imageStyle={{ opacity: 0.6 }}
+    >
+      {/* Gradient Overlay */}
+      <LinearGradient
+        colors={['rgba(28, 16, 55, 0.85)', 'rgba(28, 16, 55, 0.85)', '#0A0E27']}
+        locations={[0, 0.5, 1]}
+        style={styles.gradientOverlay}
+      />
+
       {/* Loading */}
       {loading && (
         <View style={styles.loadingContainer}>
@@ -127,11 +140,17 @@ const PlanetScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'flex-start', // Cambiado de 'center' a 'flex-start'
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingTop: 0, // Añade padding superior si necesitas más espacio
-    backgroundColor: '#1c1037',
+    paddingTop: 0,
+    backgroundColor: '#0A0E27', // Color de respaldo mientras carga la imagen
+  },
+  gradientOverlay: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
   },
   loadingContainer: {
     alignItems: 'center',
@@ -163,6 +182,7 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     width: '100%',
     borderRadius: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.73)', // Fondo semi-transparente para contraste
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.4,
@@ -170,6 +190,8 @@ const styles = StyleSheet.create({
     elevation: 6,
     alignItems: 'center',
     justifyContent: 'flex-start',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   planetName: {
     fontSize: 22,
