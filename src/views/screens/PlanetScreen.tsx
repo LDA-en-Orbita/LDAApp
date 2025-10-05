@@ -12,8 +12,8 @@ import {
 import { LocalPlanetData } from '../../models/PlanetModel';
 
 const { width } = Dimensions.get('window');
-const backgroundUri = require('../../assets/space-bg.jpg'); 
-const cardBackgroundUri = require('../../assets/card-bg.jpg'); 
+// const backgroundUri = require('../../assets/space-bg.jpg'); 
+// const cardBackgroundUri = require('../../assets/card-bg.jpg'); 
 const localPlanetsData: LocalPlanetData[] = [
   {
     id: '1',
@@ -32,6 +32,40 @@ const localPlanetsData: LocalPlanetData[] = [
       },
     ],
   },
+    {
+    id: '2',
+    command: '399',
+    target_name: 'Earth',
+    attributes: [
+      {
+        key: 'mean_radius_km',
+        name: { es: 'Radio medio (km)', en: 'Mean Radius (km)' },
+        value: '6371.01',
+      },
+      {
+        key: 'mass_x10_24_kg',
+        name: { es: 'Masa ×10^24 (kg)', en: 'Mass ×10^24 (kg)' },
+        value: '5.97219',
+      },
+    ],
+  },
+    {
+    id: '3',
+    command: '399',
+    target_name: 'Earth',
+    attributes: [
+      {
+        key: 'mean_radius_km',
+        name: { es: 'Radio medio (km)', en: 'Mean Radius (km)' },
+        value: '6371.01',
+      },
+      {
+        key: 'mass_x10_24_kg',
+        name: { es: 'Masa ×10^24 (kg)', en: 'Mass ×10^24 (kg)' },
+        value: '5.97219',
+      },
+    ],
+  }
 ];
 
 const PlanetScreen: React.FC = () => {
@@ -39,7 +73,7 @@ const PlanetScreen: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   return (
-    <ImageBackground source={backgroundUri} style={styles.container}>
+    <ImageBackground style={styles.container}>
       {/* Loading */}
       {loading && (
         <View style={styles.loadingContainer}>
@@ -53,14 +87,15 @@ const PlanetScreen: React.FC = () => {
         <FlatList
           data={planets}
           horizontal
-          showsHorizontalScrollIndicator={false}
+          showsHorizontalScrollIndicator={true}
           keyExtractor={item => item.id}
           snapToInterval={width * 0.85 + 20}
           snapToAlignment="center"
           decelerationRate="fast"
+          style={{ marginTop: 50 }} // Reducido a 50 para estar más arriba
           contentContainerStyle={{
-            paddingHorizontal: (width - (width * 0.85)) / 2,
-            alignItems: 'center',
+            paddingHorizontal: (width - (width * 0.95)) / 2,
+            alignItems: 'flex-start', // Cambiado de 'center' a 'flex-start'
             gap: 20,
           }}
           renderItem={({ item }) => (
@@ -75,7 +110,7 @@ const PlanetScreen: React.FC = () => {
 
               {/* Fondo en la tarjeta */}
               <ImageBackground
-                source={cardBackgroundUri}
+                // source={cardBackgroundUri}
                 style={styles.planetContainer}
                 imageStyle={{ borderRadius: 20, opacity: 0.9 }}
               >
@@ -102,8 +137,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     resizeMode: 'cover',
-    justifyContent: 'center',
+    justifyContent: 'flex-start', // Cambiado de 'center' a 'flex-start'
     alignItems: 'center',
+    paddingTop: 0, // Añade padding superior si necesitas más espacio
+    backgroundColor: '#1c1037',
   },
   loadingContainer: {
     alignItems: 'center',
@@ -113,28 +150,27 @@ const styles = StyleSheet.create({
   cardWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: width * 0.85,
-    paddingVertical: 20,
+    width: width * 0.95,
+    maxWidth: 800,
+    paddingVertical: 10,
   },
   imageContainer: {
-    position: 'absolute',
-    top: -50,
     alignItems: 'center',
     zIndex: 2,
   },
   planetImage: {
-    width: 120,
-    height: 120,
+    width: width * 0.6, // 70% del ancho de pantalla
+    height: width * 0.6,
     borderRadius: 60,
     borderWidth: 3,
     borderColor: '#fff',
     backgroundColor: '#000',
   },
   planetContainer: {
+    marginTop: -50,
     padding: 24,
-    paddingTop: 80,
+    paddingTop: 60,
     width: '100%',
-    minHeight: 420,
     borderRadius: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
