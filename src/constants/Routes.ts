@@ -13,7 +13,8 @@ export const AppRoutes = {
     NASA_MISSIONS: '/screens/nasa-missions',
     EVENTS_PERU: '/screens/events-peru',
     SOLAR_SYSTEM: '/screens/solar-system',
-    PLANETS: '/screens/planets'
+    PLANETS: '/screens/planets',
+    MISSIONS: '/screens/missions'
   },
   
   // Rutas modales

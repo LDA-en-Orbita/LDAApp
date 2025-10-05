@@ -13,16 +13,12 @@ class PlanetService {
    */
   async getAllPlanets(): Promise<PlanetData[]> {
     try {
-      console.log('🔧 [PlanetService] API URL:', API_PLANETS_ENDPOINT);
-      
       const response = await fetch(API_PLANETS_ENDPOINT, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-
-      console.log('🌐 [PlanetService] Respuesta cruda:', response);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
