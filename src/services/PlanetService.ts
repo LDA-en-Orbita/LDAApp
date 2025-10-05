@@ -1,60 +1,74 @@
 // services/PlanetService.ts
-import { PlanetData, LocalPlanetData } from '../models/PlanetModel';
+import { PlanetData, PlanetsApiResponse } from '../models/PlanetModel';
+
+const API_URL = 'https://back.lda-orbita.earth/api/v1/planets';
 
 class PlanetService {
-  private baseURL: string = 'https://tu-api.com/planets'; // Reemplaza con tu URL
-
-  // Método para consumir el servicio API
-  async fetchPlanetData(planetName?: string): Promise<PlanetData> {
+  /**
+   * Obtiene la lista completa de planetas desde la API
+   * @returns Promise con el array de planetas
+   * @throws Error si la petición falla
+   */
+  async getAllPlanets(): Promise<PlanetData[]> {
     try {
-      const endpoint = planetName 
-        ? `${this.baseURL}/${planetName}`
-        : this.baseURL;
-
-      const response = await fetch(endpoint, {
+      console.log('🚀 [PlanetService] Iniciando fetch a:', API_URL);
+      
+      const response = await fetch(API_URL, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
+      console.log('📡 [PlanetService] Response status:', response.status);
+      console.log('📡 [PlanetService] Response ok:', response.ok);
+
       if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data: PlanetData = await response.json();
-      return data;
+      const data: PlanetsApiResponse = await response.json();
+      console.log('📦 [PlanetService] Data recibida:', {
+        status: data.status,
+        planetsCount: data.data?.data?.length || 0
+      });
+
+      if (data.status === 200 && data.data && data.data.data) {
+        console.log('✅ [PlanetService] Planetas cargados exitosamente:', data.data.data.length);
+        return data.data.data;
+      } else {
+        throw new Error('Respuesta de API inválida');
+      }
     } catch (error) {
-      console.error('Error fetching planet data:', error);
+      console.error('❌ [PlanetService] Error completo:', error);
+      console.error('❌ [PlanetService] Error tipo:', typeof error);
+      console.error('❌ [PlanetService] Error mensaje:', error instanceof Error ? error.message : String(error));
+      
       throw error;
     }
   }
 
-  // Método para consumir datos locales (array)
-  getLocalPlanetData(planets: LocalPlanetData[], planetName?: string): PlanetData | null {
-    if (planetName) {
-      return planets.find(planet => 
-        planet.target_name.toLowerCase() === planetName.toLowerCase()
-      ) || null;
-    }
-    
-    // Si no se especifica planeta, retornar el primero o null
-    return planets.length > 0 ? planets[0] : null;
+  /**
+   * Obtiene un planeta específico por su nombre
+   * @param planetName Nombre del planeta (en inglés o español)
+   * @returns Promise con los datos del planeta o undefined si no se encuentra
+   */
+  async getPlanetByName(planetName: string): Promise<PlanetData | undefined> {
+    const planets = await this.getAllPlanets();
+    return planets.find(
+      planet => planet.target_name.toLowerCase() === planetName.toLowerCase() ||
+                planet.target_name_es?.toLowerCase() === planetName.toLowerCase()
+    );
   }
 
-  // Método que decide automáticamente qué fuente usar
-  async getPlanetData(
-    useService: boolean, 
-    localData?: LocalPlanetData[], 
-    planetName?: string
-  ): Promise<PlanetData | null> {
-    if (useService) {
-      return await this.fetchPlanetData(planetName);
-    } else if (localData) {
-      return this.getLocalPlanetData(localData, planetName);
-    }
-    
-    return null;
+  /**
+   * Obtiene un planeta específico por su comando
+   * @param command Comando del planeta (ej: '399' para Earth)
+   * @returns Promise con los datos del planeta o undefined si no se encuentra
+   */
+  async getPlanetByCommand(command: string): Promise<PlanetData | undefined> {
+    const planets = await this.getAllPlanets();
+    return planets.find(planet => planet.command === command);
   }
 }
 

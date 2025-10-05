@@ -1,7 +1,8 @@
 import { Image } from 'expo-image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Dimensions,
   FlatList,
   ImageBackground,
@@ -9,68 +10,55 @@ import {
   Text,
   View
 } from 'react-native';
-import { LocalPlanetData } from '../../models/PlanetModel';
+import { PlanetData } from '../../models/PlanetModel';
+import PlanetService from '../../services/PlanetService';
 
 const { width } = Dimensions.get('window');
-// const backgroundUri = require('../../assets/space-bg.jpg'); 
-// const cardBackgroundUri = require('../../assets/card-bg.jpg'); 
-const localPlanetsData: LocalPlanetData[] = [
-  {
-    id: '1',
-    command: '399',
-    target_name: 'Earth',
-    attributes: [
-      {
-        key: 'mean_radius_km',
-        name: { es: 'Radio medio (km)', en: 'Mean Radius (km)' },
-        value: '6371.01',
-      },
-      {
-        key: 'mass_x10_24_kg',
-        name: { es: 'Masa ×10^24 (kg)', en: 'Mass ×10^24 (kg)' },
-        value: '5.97219',
-      },
-    ],
-  },
-    {
-    id: '2',
-    command: '399',
-    target_name: 'Earth',
-    attributes: [
-      {
-        key: 'mean_radius_km',
-        name: { es: 'Radio medio (km)', en: 'Mean Radius (km)' },
-        value: '6371.01',
-      },
-      {
-        key: 'mass_x10_24_kg',
-        name: { es: 'Masa ×10^24 (kg)', en: 'Mass ×10^24 (kg)' },
-        value: '5.97219',
-      },
-    ],
-  },
-    {
-    id: '3',
-    command: '399',
-    target_name: 'Earth',
-    attributes: [
-      {
-        key: 'mean_radius_km',
-        name: { es: 'Radio medio (km)', en: 'Mean Radius (km)' },
-        value: '6371.01',
-      },
-      {
-        key: 'mass_x10_24_kg',
-        name: { es: 'Masa ×10^24 (kg)', en: 'Mass ×10^24 (kg)' },
-        value: '5.97219',
-      },
-    ],
-  }
-];
+
+// Mapeo de imágenes de planetas
+const planetImages: { [key: string]: string } = {
+  'Mercury': 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
+  'Venus': 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
+  'Earth': 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
+  'Mars': 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
+  'Jupiter': 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
+  'Saturn': 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
+  'Uranus': 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
+  'Neptune': 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
+  'Pluto':'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
+};
 
 const PlanetScreen: React.FC = () => {
-  const [planets, setPlanets] = useState<LocalPlanetData[]>(localPlanetsData);
-  const [loading, setLoading] = useState(false);
+  const [planets, setPlanets] = useState<PlanetData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch de datos desde la API usando el servicio
+  const fetchPlanets = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Usar el servicio de planetas
+      const planetsData = await PlanetService.getAllPlanets();
+      setPlanets(planetsData);
+      
+    } catch (err) {
+      // El servicio ya hace el logging detallado
+      const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
+      setError(`Error de conexión: ${errorMessage}`);
+      Alert.alert(
+        'Error de Conexión', 
+        `No se pudieron cargar los datos de los planetas.\n\nDetalle: ${errorMessage}`
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPlanets();
+  }, []);
 
   return (
     <ImageBackground style={styles.container}>
@@ -87,41 +75,44 @@ const PlanetScreen: React.FC = () => {
         <FlatList
           data={planets}
           horizontal
-          showsHorizontalScrollIndicator={true}
-          keyExtractor={item => item.id}
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item, index) => item.command || index.toString()}
           snapToInterval={width * 0.85 + 20}
           snapToAlignment="center"
           decelerationRate="fast"
-          style={{ marginTop: 50 }} // Reducido a 50 para estar más arriba
+          style={{ marginTop: 50 }}
           contentContainerStyle={{
             paddingHorizontal: (width - (width * 0.95)) / 2,
-            alignItems: 'flex-start', // Cambiado de 'center' a 'flex-start'
+            alignItems: 'flex-start',
             gap: 20,
           }}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <View style={styles.cardWrapper}>
               <View style={styles.imageContainer}>
                 <Image
-                  source={{ uri: 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png' }}
+                  source={{ uri: planetImages[item.target_name] || planetImages['Earth'] }}
                   style={styles.planetImage}
-                  resizeMode="cover"
+                  contentFit="cover"
                 />
               </View>
 
               {/* Fondo en la tarjeta */}
               <ImageBackground
-                // source={cardBackgroundUri}
                 style={styles.planetContainer}
                 imageStyle={{ borderRadius: 20, opacity: 0.9 }}
               >
-                <Text style={styles.planetName}>{item.target_name}</Text>
+                <Text style={styles.planetName}>
+                  {item.target_name_es || item.target_name}
+                </Text>
                 <Text style={styles.command}>Command: {item.command}</Text>
-                <Text style={styles.attributesTitle}>Attributes:</Text>
+                <Text style={styles.attributesTitle}>Atributos:</Text>
 
-                {item.attributes.map(attr => (
-                  <View key={attr.key} style={styles.attributeItem}>
-                    <Text style={styles.attributeName}>{attr.name.en}</Text>
-                    <Text style={styles.attributeValue}>{attr.value}</Text>
+                {item.attributes.slice(0, 6).map((attr, attrIndex) => (
+                  <View key={`${index}-${attrIndex}`} style={styles.attributeItem}>
+                    <Text style={styles.attributeName}>{attr.name.es}</Text>
+                    <Text style={styles.attributeValue}>
+                      {attr.value} {attr.unit || ''}
+                    </Text>
                   </View>
                 ))}
               </ImageBackground>
@@ -159,7 +150,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   planetImage: {
-    width: width * 0.6, // 70% del ancho de pantalla
+    width: width * 0.6,
     height: width * 0.6,
     borderRadius: 60,
     borderWidth: 3,
