@@ -22,15 +22,15 @@ export class NavigationModel {
         id: '2',
         title: 'Misiones Planetarias',
         description: 'Guías de observación y misiones',
-        icon: '�',
+        icon: '🚀',
         route: AppRoutes.SCREENS.MISSIONS
       },
       {
         id: '3',
         title: ScreenTitles.EDUCATION,
         description: 'Contenido educativo para estudiantes',
-        icon: '�',
-        route: AppRoutes.SCREENS.EDUCATION
+        icon: '📚',
+        route: AppRoutes.SCREENS.EDUCATIONAL_CONTENT
       }
     ];
   }

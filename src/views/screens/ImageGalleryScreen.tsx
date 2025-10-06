@@ -594,7 +594,7 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: 'center',
   },
-  imageTitle: {
+  modalImageTitle: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
