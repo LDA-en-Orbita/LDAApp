@@ -15,6 +15,7 @@ export const AppRoutes = {
     SOLAR_SYSTEM: '/screens/solar-system',
     PLANETS: '/screens/planets',
     MISSIONS: '/screens/missions',
+    ALL_MISSIONS: '/screens/all-missions',
     EDUCATION: '/screens/education',
     EDUCATIONAL_CONTENT: '/screens/educational-content',
     IMAGE_GALLERY: '/screens/image-gallery'

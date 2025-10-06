@@ -21,9 +21,9 @@ export class NavigationModel {
       {
         id: '2',
         title: 'Misiones Planetarias',
-        description: 'Guías de observación y misiones',
+        description: 'Explora todas las misiones espaciales',
         icon: '🚀',
-        route: AppRoutes.SCREENS.MISSIONS
+        route: AppRoutes.SCREENS.ALL_MISSIONS
       },
       {
         id: '3',
