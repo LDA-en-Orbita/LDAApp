@@ -151,10 +151,7 @@ const EducationalContentScreen: React.FC = () => {
 
   const renderProgressHeader = () => (
     <View style={styles.progressContainer}>
-      <LinearGradient
-        colors={['rgba(0, 212, 255, 0.8)', 'rgba(144, 19, 254, 0.8)']}
-        style={styles.progressCard}
-      >
+      <View style={styles.progressCard}>
         <View style={styles.levelSection}>
           <View style={styles.levelBadge}>
             <Text style={styles.levelBadgeText}>{getCurrentLevel().badge}</Text>
@@ -203,7 +200,7 @@ const EducationalContentScreen: React.FC = () => {
             <Text style={styles.statLabel}>XP para subir</Text>
           </View>
         </View>
-      </LinearGradient>
+      </View>
     </View>
   );
 
@@ -218,22 +215,17 @@ const EducationalContentScreen: React.FC = () => {
         onPress={() => handleContentPress(item)}
         activeOpacity={0.8}
       >
-        <LinearGradient
-          colors={isInteractive ? 
-            ['rgba(255, 152, 0, 0.1)', 'rgba(255, 87, 34, 0.1)'] : 
-            ['rgba(0, 212, 255, 0.1)', 'rgba(144, 19, 254, 0.1)']}
-          style={styles.contentGradient}
-        >
+        <View style={styles.contentGradient}>
           {/* Header con tipo y dificultad */}
           <View style={styles.contentHeader}>
             <View style={[styles.typeTag, { 
-              backgroundColor: isInteractive ? '#FF9800' : '#2196F3' 
+              backgroundColor: isInteractive ? 'rgba(255, 152, 0, 0.3)' : 'rgba(33, 150, 243, 0.3)' 
             }]}>
               <Text style={styles.typeText}>
                 {isInteractive ? '🎯 INTERACTIVO' : '📚 GUÍA'}
               </Text>
             </View>
-            <View style={[styles.difficultyTag, { backgroundColor: difficultyColor }]}>
+            <View style={[styles.difficultyTag, { backgroundColor: `${difficultyColor}40` }]}>
               <Text style={styles.difficultyText}>{item.difficulty.toUpperCase()}</Text>
             </View>
           </View>
@@ -270,7 +262,7 @@ const EducationalContentScreen: React.FC = () => {
               +{isInteractive ? EXPERIENCE_REWARDS.interactive_completed : EXPERIENCE_REWARDS.guide_completed} XP
             </Text>
           </View>
-        </LinearGradient>
+        </View>
       </TouchableOpacity>
     );
   };
@@ -300,11 +292,13 @@ const EducationalContentScreen: React.FC = () => {
   if (loading) {
     return (
       <ImageBackground 
-        source={{ uri: 'https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80' }}
+        source={require('../../../assets/images/background-c.jpg')}
         style={styles.container}
+        imageStyle={{ opacity: 0.6 }}
       >
         <LinearGradient
-          colors={['rgba(0, 0, 0, 0.7)', 'rgba(0, 0, 0, 0.9)']}
+          colors={['rgba(28, 16, 55, 0.85)', 'rgba(28, 16, 55, 0.85)', '#0A0E27']}
+          locations={[0, 0.5, 1]}
           style={styles.gradientOverlay}
         />
         <View style={styles.loadingContainer}>
@@ -317,25 +311,16 @@ const EducationalContentScreen: React.FC = () => {
 
   return (
     <ImageBackground 
-      source={{ uri: 'https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80' }}
+      source={require('../../../assets/images/background-c.jpg')}
       style={styles.container}
+      imageStyle={{ opacity: 0.6 }}
     >
+      {/* Gradient Overlay */}
       <LinearGradient
-        colors={['rgba(0, 0, 0, 0.7)', 'rgba(0, 0, 0, 0.9)']}
+        colors={['rgba(28, 16, 55, 0.85)', 'rgba(28, 16, 55, 0.85)', '#0A0E27']}
+        locations={[0, 0.5, 1]}
         style={styles.gradientOverlay}
       />
-
-      {/* Header con navegación */}
-      <View style={styles.header}>
-        <TouchableOpacity 
-          style={styles.backButton}
-          onPress={() => router.back()}
-        >
-          <Text style={styles.backButtonText}>←</Text>
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Misiones Planetarias</Text>
-        <View style={styles.placeholder} />
-      </View>
 
       <FlatList
         data={educationData}
@@ -364,7 +349,10 @@ const EducationalContentScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingTop: 0,
+    backgroundColor: '#0A0E27',
   },
   gradientOverlay: {
     position: 'absolute',
@@ -373,43 +361,14 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: 50,
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-  },
-  backButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 25,
-    width: 50,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  backButtonText: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  headerTitle: {
-    flex: 1,
-    textAlign: 'center',
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  placeholder: {
-    width: 50,
-  },
   flatListContent: {
     paddingBottom: 20,
   },
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
   },
   loadingText: {
     color: '#fff',
@@ -421,11 +380,15 @@ const styles = StyleSheet.create({
   progressContainer: {
     paddingHorizontal: 20,
     marginBottom: 20,
+    marginTop: 60, // Agregado para compensar la ausencia del header
   },
   progressCard: {
     borderRadius: 20,
     padding: 20,
     marginVertical: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   levelSection: {
     flexDirection: 'row',
@@ -524,9 +487,13 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderRadius: 16,
     overflow: 'hidden',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   contentGradient: {
     padding: 20,
+    backgroundColor: 'transparent',
   },
   contentHeader: {
     flexDirection: 'row',
