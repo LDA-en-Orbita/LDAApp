@@ -33,16 +33,16 @@ const planetDescriptions: { [key: string]: string } = {
 };
 
 // Mapeo de imágenes de planetas
-const planetImages: { [key: string]: string } = {
-  'Mercury': 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
-  'Venus': 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
-  'Earth': 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
-  'Mars': 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
-  'Jupiter': 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
-  'Saturn': 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
-  'Uranus': 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
-  'Neptune': 'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
-  'Pluto':'https://i.postimg.cc/8C0z8Sb5/316503695-11383066.png',
+const planetImages: { [key: string]: any } = {
+  'Mercury': require('../../../assets/images/planet/mercury.png'),
+  'Venus': require('../../../assets/images/planet/venus.png'),
+  'Earth': require('../../../assets/images/planet/earth.png'),
+  'Mars': require('../../../assets/images/planet/mars-image.png'),
+  'Jupiter': require('../../../assets/images/planet/jupiter.png'),
+  'Saturn': require('../../../assets/images/planet/earth.png'), // Usar Earth como placeholder
+  'Uranus': require('../../../assets/images/planet/earth.png'), // Usar Earth como placeholder
+  'Neptune': require('../../../assets/images/planet/earth.png'), // Usar Earth como placeholder
+  'Pluto': require('../../../assets/images/planet/earth.png'), // Usar Earth como placeholder
 };
 
 const PlanetScreen: React.FC = () => {
@@ -51,6 +51,14 @@ const PlanetScreen: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedPlanets, setExpandedPlanets] = useState<{ [key: string]: boolean }>({});
+
+  // Función para obtener la imagen del planeta
+  const getPlanetImage = (planetName: string) => {
+    console.log('🪐 [PlanetScreen] Buscando imagen para planeta:', planetName);
+    const image = planetImages[planetName] || planetImages['Earth'];
+    console.log('🖼️ [PlanetScreen] Imagen seleccionada:', image ? 'encontrada' : 'usando default');
+    return image;
+  };
 
   // Fetch de datos desde la API usando el servicio
   const fetchPlanets = async () => {
@@ -127,14 +135,10 @@ const PlanetScreen: React.FC = () => {
                   {/* Imagen del planeta */}
                   <View style={styles.imageContainer}>
                     <Image
-                      source={require('../../../assets/images/planet/earth.png')}
+                      source={getPlanetImage(item.target_name)}
                       style={styles.planetImage}
                       contentFit="contain"
                     />
-                    {/* Botón de editar (placeholder) */}
-                    <TouchableOpacity style={styles.editButton}>
-                      <Text style={styles.editIcon}>✏️</Text>
-                    </TouchableOpacity>
                   </View>
 
                   {/* Nombre y descripción */}
@@ -214,8 +218,10 @@ const PlanetScreen: React.FC = () => {
 >
   <Text style={styles.primaryButtonText}>Ver Misiones 🚀</Text>
 </TouchableOpacity>
+
+<View style={styles.secondaryButtonsRow}>
 <TouchableOpacity 
-  style={styles.secondaryButton}
+  style={[styles.secondaryButton, styles.secondaryButtonSmall]}
   onPress={() => {
     // Mapeo de nombres de planetas al formato de la API
     const planetNameMap: { [key: string]: string } = {
@@ -241,6 +247,22 @@ const PlanetScreen: React.FC = () => {
 >
   <Text style={styles.secondaryButtonText}>Galería 🖼️</Text>
 </TouchableOpacity>
+
+<TouchableOpacity 
+  style={[styles.secondaryButton, styles.secondaryButtonSmall]}
+  onPress={() => {
+    router.push({
+      pathname: '/screens/educational-content',
+      params: {
+        planetName: item.target_name,
+        planetCode: item.command
+      }
+    });
+  }}
+>
+  <Text style={styles.secondaryButtonText}>Educativo 📚</Text>
+</TouchableOpacity>
+</View>
                   </View>
                 </View>
               </ScrollView>
@@ -415,10 +437,14 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   actionButtons: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     gap: 12,
     width: width - 48,
     marginTop: 8,
+  },
+  secondaryButtonsRow: {
+    flexDirection: 'row',
+    gap: 12,
   },
   primaryButton: {
     flex: 1,
@@ -442,6 +468,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: '#3B9DC9',
+  },
+  secondaryButtonSmall: {
+    flex: 0.5,
   },
   secondaryButtonText: {
     color: '#fff',
