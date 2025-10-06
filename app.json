@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "ldaapp",
-    "slug": "ldaapp",
+    "name": "CosmoLens",
+    "slug": "cosmolens",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "ldaapp",
+    "icon": "./assets/images/cosmolens.png",
+    "scheme": "cosmolens",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -14,17 +14,17 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./assets/images/cosmolens.png",
+        "backgroundImage": "./assets/images/cosmolens.png",
+        "monochromeImage": "./assets/images/cosmolens.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.carlosfabriciodev.ldaapp"
+      "package": "earth.ldaorbita.app"
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favcosmolens.png"
     },
     "plugins": [
       [
@@ -39,7 +39,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/splash-screen.jpg",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
@@ -53,6 +53,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "e467a261-7a76-4063-b131-cbae264b232e"
+      }
+    },
+    "owner": "gafc2001"
   }
 }
