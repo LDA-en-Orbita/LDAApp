@@ -1,15 +1,16 @@
 import { ScreenLayout } from '@/src/components/ScreenLayout';
-import MissionEducationScreen from '@/src/views/screens/MissionEducationScreen';
+import { ScreenTitles } from '@/src/constants/Routes';
+import EducationScreen from '@/src/views/screens/EducationScreen';
 import { Stack } from 'expo-router';
 import React from 'react';
 
-export default function MissionsPage() {
+export default function EducationPage() {
   return (
     <ScreenLayout statusBarStyle="light">
       <Stack.Screen 
         options={{ 
           headerShown: true, 
-          title: 'Misiones Planetarias',
+          title: ScreenTitles.EDUCATION || 'Contenido Educativo',
           headerTransparent: true,
           headerStyle: { 
             backgroundColor: 'transparent',
@@ -22,7 +23,7 @@ export default function MissionsPage() {
           headerBlurEffect: 'dark',
         }} 
       />
-      <MissionEducationScreen />
+      <EducationScreen />
     </ScreenLayout>
   );
 }

@@ -4,15 +4,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    Dimensions,
-    ImageBackground,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Dimensions,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { MissionData } from '../../models/MissionModel';
 import MissionService from '../../services/MissionService';
@@ -270,10 +269,18 @@ const MissionDetailsScreen: React.FC<MissionDetailsScreenProps> = () => {
               {/* Botones de acción */}
               <View style={styles.actionButtons}>
                 <TouchableOpacity style={styles.primaryButton}>
-                  <Text style={styles.primaryButtonText}>Ver Detalles 📄</Text>
+                  <Text style={styles.primaryButtonText}>Ver Detalles</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.secondaryButton}>
-                  <Text style={styles.secondaryButtonText}>NASA 🔗</Text>
+                <TouchableOpacity 
+                  style={styles.secondaryButton}
+                  onPress={() => router.push({
+                    pathname: '/screens/image-gallery',
+                    params: {
+                      planetName: planetName.toLowerCase(),
+                      planetDisplayName: planetNameEs
+                    }
+                  })}
+                >
                 </TouchableOpacity>
               </View>
             </View>

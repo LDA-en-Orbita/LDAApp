@@ -199,25 +199,48 @@ const PlanetScreen: React.FC = () => {
 
                   {/* Botones de acción */}
                   <View style={styles.actionButtons}>
-                    <TouchableOpacity 
-                      style={styles.primaryButton}
-                      onPress={() => {
-                        console.log('🚀 Navegando a misiones de:', item.target_name);
-                        router.push({
-                          pathname: '/screens/missions',
-                          params: {
-                            planetName: item.target_name, // Nombre en inglés para la API
-                            planetNameEs: item.target_name_es || item.target_name, // Nombre en español para mostrar
-                            planetCode: item.command
-                          }
-                        });
-                      }}
-                    >
-                      <Text style={styles.primaryButtonText}>Ver Misiones 🚀</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.secondaryButton}>
-                      <Text style={styles.secondaryButtonText}>NASA 🔗</Text>
-                    </TouchableOpacity>
+<TouchableOpacity 
+  style={styles.primaryButton}
+  onPress={() => {
+    router.push({
+      pathname: '/screens/mission-details',
+      params: {
+        planetName: item.target_name,
+        planetNameEs: item.target_name_es || item.target_name,
+        planetCode: item.command
+      }
+    });
+  }}
+>
+  <Text style={styles.primaryButtonText}>Ver Misiones 🚀</Text>
+</TouchableOpacity>
+<TouchableOpacity 
+  style={styles.secondaryButton}
+  onPress={() => {
+    // Mapeo de nombres de planetas al formato de la API
+    const planetNameMap: { [key: string]: string } = {
+      'Mercury': 'mercurio',
+      'Venus': 'venus', 
+      'Earth': 'tierra',
+      'Mars': 'marte',
+      'Jupiter': 'jupiter',
+      'Saturn': 'saturno',
+      'Uranus': 'urano',
+      'Neptune': 'neptuno',
+      'Pluto': 'pluton'
+    };
+    
+    router.push({
+      pathname: '/screens/image-gallery',
+      params: {
+        planetName: planetNameMap[item.target_name] || item.target_name.toLowerCase(),
+        planetDisplayName: item.target_name_es || item.target_name
+      }
+    });
+  }}
+>
+  <Text style={styles.secondaryButtonText}>Galería 🖼️</Text>
+</TouchableOpacity>
                   </View>
                 </View>
               </ScrollView>

@@ -11,33 +11,26 @@ export interface MenuOption {
 export class NavigationModel {
   static getMenuOptions(): MenuOption[] {
     return [
-      // {
-      //   id: '1',
-      //   title: ScreenTitles.NASA_MISSIONS,
-      //   description: 'Explora las misiones espaciales',
-      //   icon: '🚀',
-      //   route: AppRoutes.SCREENS.NASA_MISSIONS
-      // },
-      // {
-      //   id: '2',
-      //   title: ScreenTitles.EVENTS_PERU,
-      //   description: 'Eventos astronómicos visibles',
-      //   icon: '🌟',
-      //   route: AppRoutes.SCREENS.EVENTS_PERU
-      // },
-      // {
-      //   id: '3',
-      //   title: ScreenTitles.SOLAR_SYSTEM,
-      //   description: 'Descubre nuestro sistema',
-      //   icon: '🪐',
-      //   route: AppRoutes.SCREENS.SOLAR_SYSTEM
-      // },
       {
-        id: '4',
+        id: '1',
         title: ScreenTitles.PLANETS,
         description: 'Información de planetas',
         icon: '🪐',
         route: AppRoutes.SCREENS.PLANETS
+      },
+      {
+        id: '2',
+        title: 'Misiones Planetarias',
+        description: 'Guías de observación y misiones',
+        icon: '�',
+        route: AppRoutes.SCREENS.MISSIONS
+      },
+      {
+        id: '3',
+        title: ScreenTitles.EDUCATION,
+        description: 'Contenido educativo para estudiantes',
+        icon: '�',
+        route: AppRoutes.SCREENS.EDUCATION
       }
     ];
   }

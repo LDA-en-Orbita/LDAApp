@@ -14,7 +14,9 @@ export const AppRoutes = {
     EVENTS_PERU: '/screens/events-peru',
     SOLAR_SYSTEM: '/screens/solar-system',
     PLANETS: '/screens/planets',
-    MISSIONS: '/screens/missions'
+    MISSIONS: '/screens/missions',
+    EDUCATION: '/screens/education',
+    IMAGE_GALLERY: '/screens/image-gallery'
   },
   
   // Rutas modales
@@ -38,5 +40,6 @@ export const ScreenTitles = {
   EVENTS_PERU: 'Eventos en Perú',
   SOLAR_SYSTEM: 'Sistema Solar',
   PLANETS: 'Planetas',
+  EDUCATION: 'Contenido Educativo',
   HOME: 'SpaceExplorer'
 } as const;
