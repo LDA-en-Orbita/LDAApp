@@ -1,28 +1,27 @@
 // views/screens/EducationalContentScreen.tsx
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-  ImageBackground,
-  Alert,
-  RefreshControl,
-  ActivityIndicator,
-  Dimensions,
-} from 'react-native';
-import { useRouter, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { 
-  MissionEducationContent, 
-  MissionEducationData, 
-  PlanetCodeMap, 
-  DifficultyColors,
-  UserProgress,
-  LevelInfo,
-  LEVELS_CONFIG,
-  EXPERIENCE_REWARDS
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import {
+    ActivityIndicator,
+    Alert,
+    Dimensions,
+    FlatList,
+    ImageBackground,
+    RefreshControl,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
+import {
+    DifficultyColors,
+    EXPERIENCE_REWARDS,
+    LevelInfo,
+    LEVELS_CONFIG,
+    MissionEducationContent,
+    PlanetCodeMap,
+    UserProgress
 } from '../../models/MissionEducationModel';
 import MissionEducationService from '../../services/MissionEducationService';
 
