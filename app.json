@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "CosmoLens",
-    "slug": "cosmolens",
+    "slug": "ldapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/cosmolens.png",
